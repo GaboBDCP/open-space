@@ -11,12 +11,15 @@ interface ThemeCardProps {
   theme: Theme;
   onVote: (themeId: string) => void;
   hasVoted: boolean;
+  allowVoting?: boolean;
 }
 
-export function ThemeCard({ theme, onVote, hasVoted }: ThemeCardProps) {
+export function ThemeCard({ theme, onVote, hasVoted, allowVoting = true }: ThemeCardProps) {
   const [isVoting, setIsVoting] = useState(false);
 
   const handleVote = async () => {
+    if (!allowVoting) return;
+    
     setIsVoting(true);
     try {
       await onVote(theme.id);
@@ -35,7 +38,7 @@ export function ThemeCard({ theme, onVote, hasVoted }: ThemeCardProps) {
             variant={hasVoted ? "secondary" : "default"}
             size="sm"
             onClick={handleVote}
-            disabled={isVoting || hasVoted}
+            disabled={isVoting || hasVoted || !allowVoting}
             className="gap-2"
           >
             <ThumbsUp className="w-4 h-4" />

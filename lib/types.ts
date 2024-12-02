@@ -28,3 +28,23 @@ export interface User {
   name: string;
   email: string;
 }
+
+export interface OpenSpaceAccess {
+  spaceId: string;
+  username: string;
+  isAdmin?: boolean;
+}
+
+export interface OpenSpaceEvent {
+  id: string;
+  name: string;
+  description: string;
+  date: string;
+  location: string;
+  maxParticipants: number;
+  status: 'draft' | 'published' | 'completed';
+  createdAt: string;
+  updatedAt: string;
+  allowProposals: boolean;
+  allowVoting: boolean;
+}
