@@ -1,5 +1,5 @@
 import { getEvent, getEventIds } from "@/lib/data/events";
-import { EditEventPageClient } from "./edit-event-page-client";
+import { EventForm } from "@/components/admin/event-form";
 
 export async function generateStaticParams() {
   return await getEventIds();
@@ -19,5 +19,12 @@ export default async function EditEventPage({ params }: { params: { id: string }
     );
   }
 
-  return <EditEventPageClient event={event} />;
+  return (
+    <main className="min-h-screen p-8 bg-background">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8">Editar Open Space</h1>
+        <EventForm initialEvent={event} mode="edit" />
+      </div>
+    </main>
+  );
 }
