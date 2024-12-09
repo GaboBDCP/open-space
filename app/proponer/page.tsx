@@ -7,7 +7,6 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ThemeCard } from "@/components/themes/theme-card";
 import { Theme } from "@/lib/types";
 import { useAccess } from "@/lib/context/access-context";
 import { useState } from "react";
@@ -23,35 +22,12 @@ export default function ProposePage() {
   
   // Mock data - In a real app, this would come from your backend
   const [allowProposals, setAllowProposals] = useState(true);
-  const [allowVoting, setAllowVoting] = useState(true);
   
   useEffect(() => {
     if (!access) {
       router.push("/");
     }
   }, [access, router]);
-
-  // Mock themes data - In a real app, this would come from your backend
-  const [themes, setThemes] = useState<Theme[]>([
-    {
-      id: "1",
-      title: "GraphQL vs REST en 2024",
-      description: "Comparación de arquitecturas y casos de uso",
-      author: "María García",
-      tags: ["API", "Backend", "Arquitectura"],
-      votes: 5,
-      votedBy: ["user2", "user3"]
-    },
-    {
-      id: "2",
-      title: "Micro-frontends en la práctica",
-      description: "Experiencias reales implementando arquitecturas distribuidas",
-      author: "Carlos Ruiz",
-      tags: ["Frontend", "Arquitectura", "Escalabilidad"],
-      votes: 3,
-      votedBy: ["user1"]
-    }
-  ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,27 +46,13 @@ export default function ProposePage() {
       votedBy: []
     };
 
-    setThemes(prev => [newTheme, ...prev]);
+    // In a real app, save to backend
+    router.push("/votar");
     
     // Reset form
     setTitle("");
     setDescription("");
     setTags("");
-  };
-
-  const handleVote = async (themeId: string) => {
-    if (!allowVoting) return;
-
-    setThemes(prev => prev.map(theme => {
-      if (theme.id === themeId && !theme.votedBy.includes(access?.username || "")) {
-        return {
-          ...theme,
-          votes: theme.votes + 1,
-          votedBy: [...theme.votedBy, access?.username || ""]
-        };
-      }
-      return theme;
-    }));
   };
 
   if (!access) {
@@ -108,16 +70,6 @@ export default function ProposePage() {
             <AlertTitle>Propuestas Cerradas</AlertTitle>
             <AlertDescription>
               La propuesta de temas está temporalmente cerrada por el administrador.
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {!allowVoting && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Votaciones Cerradas</AlertTitle>
-            <AlertDescription>
-              La votación de temas está temporalmente cerrada por el administrador.
             </AlertDescription>
           </Alert>
         )}
@@ -176,19 +128,6 @@ export default function ProposePage() {
             </Button>
           </form>
         </Card>
-
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold mb-4">Temas Propuestos</h2>
-          {themes.map((theme) => (
-            <ThemeCard
-              key={theme.id}
-              theme={theme}
-              onVote={handleVote}
-              hasVoted={theme.votedBy.includes(access.username)}
-              allowVoting={allowVoting}
-            />
-          ))}
-        </div>
       </div>
     </main>
   );

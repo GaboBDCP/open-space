@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { OpenSpaceEvent } from "@/lib/types";
 import { LockOpen, Lock, ThumbsUp } from "lucide-react";
 
@@ -26,7 +27,8 @@ export function EventForm({ initialEvent, mode }: EventFormProps) {
     location: initialEvent?.location || "",
     maxParticipants: initialEvent?.maxParticipants?.toString() || "",
     allowProposals: initialEvent?.allowProposals || false,
-    allowVoting: initialEvent?.allowVoting || false
+    allowVoting: initialEvent?.allowVoting || false,
+    status: initialEvent?.status || "draft"
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -103,6 +105,23 @@ export function EventForm({ initialEvent, mode }: EventFormProps) {
           <p className="text-sm text-muted-foreground">
             Este ID será usado por los participantes para acceder al evento
           </p>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="status">Estado del Evento</Label>
+          <Select
+            value={formData.status}
+            onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as 'draft' | 'published' | 'completed' }))}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Selecciona el estado" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="draft">Borrador</SelectItem>
+              <SelectItem value="published">Publicado</SelectItem>
+              <SelectItem value="completed">Completado</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-2">

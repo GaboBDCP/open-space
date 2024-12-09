@@ -35,6 +35,11 @@ export default function AdminDashboardPage() {
     }
   }, [access, router]);
 
+  const handleDeleteEvent = (eventId: string) => {
+    // In a real app, this would make an API call
+    setEvents(events.filter(event => event.id !== eventId));
+  };
+
   if (!access?.isAdmin) {
     return null;
   }
@@ -54,7 +59,11 @@ export default function AdminDashboardPage() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard 
+              key={event.id} 
+              event={event} 
+              onDelete={handleDeleteEvent}
+            />
           ))}
         </div>
       </div>

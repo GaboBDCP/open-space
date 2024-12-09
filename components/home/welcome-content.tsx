@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar } from "lucide-react";
+import { Calendar, MessageSquare, ThumbsUp } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAccess } from "@/lib/context/access-context";
@@ -32,13 +32,20 @@ export function WelcomeContent() {
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
         <Link href="/proponer" className="w-full sm:w-auto">
-          <Button size="lg" className="w-full sm:w-auto">
+          <Button size="lg" className="w-full sm:w-auto gap-2">
+            <MessageSquare className="w-4 h-4" />
             Proponer Tema
           </Button>
         </Link>
+        <Link href="/votar" className="w-full sm:w-auto">
+          <Button size="lg" variant="secondary" className="w-full sm:w-auto gap-2">
+            <ThumbsUp className="w-4 h-4" />
+            Votar Temas
+          </Button>
+        </Link>
         <Link href="/agenda" className="w-full sm:w-auto">
-          <Button size="lg" variant="outline" className="w-full sm:w-auto">
-            <Calendar className="w-4 h-4 mr-2" />
+          <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2">
+            <Calendar className="w-4 h-4" />
             Ver Agenda
           </Button>
         </Link>

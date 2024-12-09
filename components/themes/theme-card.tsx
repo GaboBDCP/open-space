@@ -9,7 +9,7 @@ import { useState } from "react";
 
 interface ThemeCardProps {
   theme: Theme;
-  onVote: (themeId: string) => void;
+  onVote: (themeId: string, remove?: boolean) => void;
   hasVoted: boolean;
   allowVoting?: boolean;
 }
@@ -22,7 +22,7 @@ export function ThemeCard({ theme, onVote, hasVoted, allowVoting = true }: Theme
     
     setIsVoting(true);
     try {
-      await onVote(theme.id);
+      await onVote(theme.id, hasVoted);
     } finally {
       setIsVoting(false);
     }
@@ -38,10 +38,10 @@ export function ThemeCard({ theme, onVote, hasVoted, allowVoting = true }: Theme
             variant={hasVoted ? "secondary" : "default"}
             size="sm"
             onClick={handleVote}
-            disabled={isVoting || hasVoted || !allowVoting}
+            disabled={isVoting || !allowVoting}
             className="gap-2"
           >
-            <ThumbsUp className="w-4 h-4" />
+            <ThumbsUp className={`w-4 h-4 ${hasVoted ? "fill-current" : ""}`} />
             {hasVoted ? "Votado" : "Votar"}
           </Button>
         </div>
